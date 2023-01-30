@@ -11,6 +11,7 @@ import 'package:fab_learner/video.dart';
 import 'package:flutter/material.dart';
 import 'package:permission_handler/permission_handler.dart';
 import 'package:qrscan/qrscan.dart' as scanner;
+
 import 'package:url_launcher/url_launcher.dart';
 
 class ScanQR extends StatefulWidget {
