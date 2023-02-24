@@ -1,10 +1,13 @@
+// ignore_for_file: use_build_context_synchronously
+
 import 'package:fab_learner/home.dart';
+import 'package:fab_learner/profile.dart';
 import 'package:fab_learner/scan.dart';
-import 'package:fab_learner/video.dart';
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:url_launcher/url_launcher.dart';
 
+import 'chat_page.dart';
 import 'login.dart';
 
 class Screens extends StatefulWidget {
@@ -18,23 +21,24 @@ class _ScreensState extends State<Screens> {
   final Uri _url = Uri.parse('https://fablearner.online/');
   final Uri _tnCurl = Uri.parse('https://fablearner.online/tnc/');
   int selectedIndex = 0;
-  var userName;
-  List screens = [HomePage(), ScanQR(), Videos()];
+  // var userName;
+  List screens = [const HomePage(), const ScanQR(), const Profile()];
   @override
   void initState() {
     super.initState();
-    getName();
+    // getName();
   }
 
-  Future<void> getName() async {
-    SharedPreferences prefs = await SharedPreferences.getInstance();
-    userName = prefs.getString('userName');
-  }
+  // Future<void> getName() async {
+  //   SharedPreferences prefs = await SharedPreferences.getInstance();
+  //   userName = prefs.getString('userName');
+  // }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
         appBar: AppBar(
+          elevation: 1,
           centerTitle: true,
           title: const Text('Fab Learner'),
           //Title is showing a text at top
@@ -52,7 +56,7 @@ class _ScreensState extends State<Screens> {
           child: ListView(
             padding: EdgeInsets.zero,
             children: [
-              UserAccountsDrawerHeader(
+              const UserAccountsDrawerHeader(
                   currentAccountPicture: Icon(Icons.person),
                   accountName: Text('userName'),
                   accountEmail: Text('accountEmail')),
@@ -68,6 +72,16 @@ class _ScreensState extends State<Screens> {
               const ListTile(
                 leading: Icon(Icons.file_upload_outlined),
                 title: Text('Upload Report'),
+              ),
+              ListTile(
+                leading: const Icon(Icons.chat_bubble_outline),
+                title: const Text('Chat'),
+                onTap: () {
+                  Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                          builder: (context) => const ChatPage()));
+                },
               ),
               ListTile(
                 leading: const Icon(Icons.text_snippet_outlined),
@@ -104,7 +118,7 @@ class _ScreensState extends State<Screens> {
         ),
         //Drawer is sideBar
         bottomNavigationBar: BottomNavigationBar(
-          items: [
+          items: const [
             BottomNavigationBarItem(icon: Icon(Icons.home), label: 'Home'),
             BottomNavigationBarItem(
                 icon: Icon(Icons.qr_code_scanner), label: 'Scan'),

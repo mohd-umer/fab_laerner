@@ -8,7 +8,10 @@ import 'package:fab_learner/screens.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:http/http.dart';
+import 'package:lottie/lottie.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+
+import 'components/constants.dart';
 
 class SplashScreen extends StatefulWidget {
   const SplashScreen({Key? key}) : super(key: key);
@@ -101,9 +104,21 @@ class _HomePageState extends State<HomePage> {
   bool isloading = false;
   var courses = [];
   Future<void> getCourse() async {
-    final res =
-        await get(Uri.parse('${dotenv.env['APP_URL']}learnpress/v1/courses'));
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    var userToken = prefs.getString('token');
+    print("=================$userToken");
+    final res = await get(
+        Uri.parse(
+          'https://fablearner.ae/wp-json/learnpress/v1/courses/?learned=true',
+        ),
+        headers: {
+          'Content-Type': 'application/json',
+          'Accept': 'application/json',
+          'Authorization': 'Bearer $userToken',
+        });
+
     var response = jsonDecode(res.body);
+    print("============================$response");
     courses = response;
     if (courses != null) {
       setState(() {
@@ -117,8 +132,11 @@ class _HomePageState extends State<HomePage> {
     var width = MediaQuery.of(context).size.width;
     return Scaffold(
       body: isloading == false
-          ? const Center(
-              child: CircularProgressIndicator(),
+          ? Center(
+              child: Lottie.network(
+                 lottieUrl,
+                  repeat: true,
+                  filterQuality: FilterQuality.high),
             )
           : SingleChildScrollView(
               child: Column(
